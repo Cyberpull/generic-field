@@ -21,8 +21,20 @@
  */
 
 (function() {
+    // Callback Trigger
+    function caller(callback, args) {
+        args= (args instanceof Array) ? args : [];
+        if(typeof(callback) == 'function') {
+            return callback.apply(this, args);
+        }
+        return null;
+    }
+
     // Maps of private variables for GenericField
     var GFMap= new Map();
+
+    // Allowed GenericField Types
+    var allowedTypes= ['text', 'number'];
 
     // Make GenericField global variable
     window.GenericField= GenericField;
@@ -53,18 +65,44 @@
 
         if(!$element) throw 'Element not found!';
 
+        GFMap.set(this, $private);
         $private.$element= $element;
 
-        $private.$options= $options= '';
+        $private.$options= $options= Object.assign({
+            type: allowedTypes[0], // text|number
+            maxLineCount: 1, // Maximum Line Count
+        }, options);
 
     }
 
     Object.defineProperties(GenericField.prototype, {
+        type: {
+            get: function() {
+                return this.$options.type;
+            }
+        },
         value: {
             get: function() {
-                return null;
+                return this.$element.innerText;
             },
             set: function(value) {
+                this.$element.innerHTML= value;
+            }
+        },
+        $element: {
+            get: function() {
+                var $private= GFMap.get(this);
+                return $private.$element;
+            }
+        },
+        $options: {
+            get: function() {
+                var $private= GFMap.get(this);
+                return $private.$options;
+            }
+        },
+        set: {
+            value: function(key, value) {
                 // 
             }
         }
