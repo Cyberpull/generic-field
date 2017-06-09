@@ -1,0 +1,27 @@
+{
+  "name": "generic-field",
+  "homepage": "https://github.com/christianezeani/generic-field",
+  "authors": [
+    "Christian Ezeani <christian.ezeani@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "keywords": [
+    "javascript",
+    "angularjs",
+    "text-editor",
+    "text-input",
+    "cross-browser",
+    "number-input",
+    "date-input",
+    "html-input"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
