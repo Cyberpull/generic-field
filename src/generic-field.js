@@ -3,21 +3,48 @@
  * 
  * Module Name: GenericField
  * Module Purpose: Displays generic form fields with powerful functionalities
+ * 
  * @copyright 2017 Christian Ezeani
  * @author Christian Ezeani <christian.ezeani@gmail.com>
  */
 
 /**
  * This callback is triggered when the GenericField is initialized
+ * 
  * @callback onInit
  * @param {GenericField} GenericField
  */
 
 /**
  * This callback is triggered each time the content of the GenericField changes
+ * 
  * @callback onChange
- * @param {Event} e
- * @param {GenericField} GenericField
+ * @param {Event} e - Event Object
+ * @param {GenericField} inst - An Instance of GenericField
+ */
+
+
+
+/** Type Definitions */
+
+/**
+ * A String or an Element Object
+ * @typedef {(string|Element)} GenericFieldSelector
+ */
+
+/**
+ * A GenericField Object
+ * @typedef {object} GenericField
+ */
+
+/**
+ * A value GenericField
+ * @typedef {((string|object|string[]|object[]))} GenericFieldValue
+ */
+
+/**
+ * Target Elements of GenericField
+ * @typedef {Element[]} GenericFieldTarget
  */
 
 (function() {
@@ -43,24 +70,28 @@
         console.info(this);
     }
 
-    // Make GenericField global
+    /** @type {GenericField} */
     window.GenericField= GenericField;
 
     /**
      * Creates an instance of generic form field
-     * @param {(String|ElementNode)} selector - HTML Element selector
-     * @param {Object} options - GenericField Options
+     * 
+     * @global
+     * @class
+     * @param {GenericFieldSelector} selector - HTML Element selector
+     * @param {object} options - GenericField Options
      * @returns {GenericField} an instance of GenericField
      */
     function GenericField(selector, options) {
-        var $private= {}, $element, $options;
+        var $private= {}, $target, $options;
         switch(typeof(selector)) {
             case 'string': {
-                $element= document.querySelector(selector);
+                $target= document.querySelectorAll(selector);
             } break;
             case 'object': {
+                $target= [];
                 if(selector instanceof Element) {
-                    $element= selector;
+                    $target.push(selector);
                 } else {
                     throw 'Invalid Element Supplied!';
                 }
@@ -83,12 +114,21 @@
         initialize.call(this);
     }
 
+
     Object.defineProperties(GenericField.prototype, {
+        /**
+         * @this {GenericField}
+         * @type {String}
+         */
         type: {
             get: function() {
                 return this.$options.type;
             }
         },
+        /**
+         * @this {GenericField}
+         * @type {GenericFieldValue}
+         */
         value: {
             get: function() {
                 return this.$element.innerText;
@@ -97,18 +137,41 @@
                 this.$element.innerHTML= value;
             }
         },
+        /**
+         * @this {GenericField}
+         * @type {GenericFieldTarget}
+         */
+        $target: {
+            get: function() {
+                var $private= GFMap.get(this);
+                return $private.$target;
+            }
+        },
+        /**
+         * @this {GenericField}
+         * @type {Element}
+         */
         $element: {
             get: function() {
                 var $private= GFMap.get(this);
                 return $private.$element;
             }
         },
+        /**
+         * @this {GenericField}
+         * @type {object}
+         */
         $options: {
             get: function() {
                 var $private= GFMap.get(this);
                 return $private.$options;
             }
         },
+        /**
+         * Set or modify an option
+         * 
+         * @this {GenericField}
+         */
         set: {
             value: function(key, value) {
                 // 
