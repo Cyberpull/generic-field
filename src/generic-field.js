@@ -36,7 +36,14 @@
     // Allowed GenericField Types
     var allowedTypes= ['text', 'number'];
 
-    // Make GenericField global variable
+    /**
+     * Initializes GenericField
+     */
+    function initialize() {
+        console.info(this);
+    }
+
+    // Make GenericField global
     window.GenericField= GenericField;
 
     /**
@@ -73,6 +80,7 @@
             maxLineCount: 1, // Maximum Line Count
         }, options);
 
+        initialize.call(this);
     }
 
     Object.defineProperties(GenericField.prototype, {
