@@ -101,14 +101,14 @@
             }
         }
 
-        if(!$element) throw 'Element not found!';
+        if(!($target && $target.length)) throw 'Element not found!';
 
         GFMap.set(this, $private);
-        $private.$element= $element;
+        $private.$target= $target;
 
         $private.$options= $options= Object.assign({
-            type: allowedTypes[0], // text|number
-            maxLineCount: 1, // Maximum Line Count
+            type: allowedTypes[0],
+            maxLineCount: 1,
         }, options);
 
         initialize.call(this);
@@ -145,16 +145,6 @@
             get: function() {
                 var $private= GFMap.get(this);
                 return $private.$target;
-            }
-        },
-        /**
-         * @this {GenericField}
-         * @type {Element}
-         */
-        $element: {
-            get: function() {
-                var $private= GFMap.get(this);
-                return $private.$element;
             }
         },
         /**
